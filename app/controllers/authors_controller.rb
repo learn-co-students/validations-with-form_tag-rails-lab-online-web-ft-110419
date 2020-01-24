@@ -14,6 +14,7 @@ class AuthorsController < ApplicationController
       @author.save
       redirect_to author_path(@author)
     else 
+      error_styles(@author)
       render :new
     end
   end
@@ -29,6 +30,7 @@ class AuthorsController < ApplicationController
       @author.save 
       redirect_to author_path(@author)
     else 
+      error_styles(@author)
       render :edit
     end
   end
@@ -40,4 +42,11 @@ class AuthorsController < ApplicationController
   def author_params
     params.permit(:name, :email, :phone_number)
   end
+
+  def error_styles(author)
+    @name_err    = 'field_with_errors' if !author.errors[:name].empty?
+    @email_err = 'field_with_errors' if !author.errors[:email].empty?
+    @phone_number_err  = 'field_with_errors' if !author.errors[:phone_number].empty?
+  end
+
 end

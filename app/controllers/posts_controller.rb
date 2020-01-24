@@ -1,9 +1,10 @@
 class PostsController < ApplicationController
-
+  before_action :find_post, only: [:show, :edit, :update]
 
   def show
-    @post = Post.find(params[:id])
   end
+
+  
 
   def new
     @post = Post.new
@@ -11,27 +12,33 @@ class PostsController < ApplicationController
 
   def create 
     @post = Post.new(post_params)
+
     if @post.valid?
       @post.save
+      redirect_to @post
     else 
+      error_styles(@post)
       render :new 
     end
   end
 
 
+
   def edit
-    @post = Post.find(params[:id])
   end
 
   def update
-    @post = Post.find(params[:id])
-    
-    if @post.update_attributes(post_params)
-      redirect_to post_path(@post)
+    if @post.update(post_params)
+      redirect_to @post
     else 
+      error_styles(@post)
       render :edit
     end
   end
+
+
+
+
 
 
 
@@ -41,4 +48,15 @@ class PostsController < ApplicationController
   def post_params
     params.permit(:title, :category, :content)
   end
+
+  def find_post
+    @post = Post.find_by(params[:id])
+  end
+
+  def error_styles(post)
+    @title_err    = 'field_with_errors' if !post.errors[:title].empty?
+    @category_err = 'field_with_errors' if !post.errors[:category].empty?
+    @content_err  = 'field_with_errors' if !post.errors[:content].empty?
+  end
+
 end
