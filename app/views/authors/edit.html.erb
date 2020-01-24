@@ -1,0 +1,7 @@
+<h1>Edit Author</h1>
+
+<%= form_tag @author do%>
+    name:  <%=text_field_tag :'author[name]'%><br><br>
+    email: <%= email_field :'author[email]' %><br><br>
+    phone: <%= telephone_field :'author[phone_number]' %>
+<%end%>
