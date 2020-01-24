@@ -1,0 +1,16 @@
+<h1>Edit Author</h1>
+
+<%if @author.errors.any?%>
+    <ul>
+        <%@author.errors.full_messages.each do |msg|%>
+            <li><%=msg%></li>
+        <%end%>
+    </ul>
+<%end%>
+
+<%= form_tag author_path(@author.id), method: 'patch' do%>
+    name:  <%=text_field_tag :name, @author.name, class: @name_err %><br><br>
+    email: <%= email_field_tag :email, @author.email, class: @email_err %><br><br>
+    phone: <%= telephone_field_tag :phone_number, @author.phone_number, class: @phone_number_err %><br><br>
+    <%=submit_tag 'Update Author'%>
+<%end%>
