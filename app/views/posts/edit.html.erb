@@ -1,11 +1,32 @@
 <h2>Editing "<%= @post.title %>"</h2>
+
+<% if @post.errors.any? %>
+  <div id="error_explanation">
+  <h3>There was a problem - please try again! Here are the errors you got:</h3>
+  <ul>
+  <% @post.errors.full_messages.each_with_index do |message, index| %>
+    <li><%= index + 1 %>. <%= message %></li>
+  <% end %>
+</ul>
+</div>
+
+<% end %>
+
+<% def error_field(name) %>
+  <% if @post.errors[name.to_sym].any? %>
+    <% return ' field_with_errors' %>
+  <% else %> 
+    <% return ""%>
+  <% end %>
+<% end %>
+
 <%= form_tag post_path(@post), method: "patch" do %>
-  <div class="field">
+  <div class="field <%= error_field("title")%>" >
     <%= label_tag "title", "Title" %>
     <%= text_field_tag "title", @post.title %>
   </div>
 
-  <div class="field">
+  <div class="field <%= error_field("category")%>" >
     <%= label_tag "category", "Category" %>
     <p>Must be either "Fiction" or "Non-Fiction".</p>
     <%= text_field_tag "category", @post.category %>
@@ -15,7 +36,7 @@
     </p>
   </div>
 
-  <div class="field">
+  <div class="field <%= error_field("content")%>">
     <%= label_tag "content", "Content" %>
     <br />
     <%= text_area_tag "content", @post.content %>
